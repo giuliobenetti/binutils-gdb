@@ -26,6 +26,7 @@ if { !([istarget "xtensa*-*-*"]) } {
 run_dump_test "coalesce"
 run_dump_test "diff_overflow"
 run_dump_test "lcall"
+run_dump_test "relax-loc"
 
 run_dump_test "relax-static-pie"
 run_dump_test "relax-static-local-pie"
