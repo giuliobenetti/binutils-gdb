@@ -1248,6 +1248,7 @@ or1k_elf_relocate_section (bfd *output_bfd,
   asection *sgot, *splt;
   bfd_vma plt_base, got_base, got_sym_value;
   bfd_boolean ret_val = TRUE;
+  bfd_boolean saw_gotha = FALSE;
 
   if (htab == NULL)
     return FALSE;
@@ -1455,6 +1456,16 @@ or1k_elf_relocate_section (bfd *output_bfd,
 	    if (r_type == R_OR1K_GOT16
 		|| r_type == R_OR1K_GOT_AHI16)
 	      relocation -= got_sym_value;
+
+	    if (r_type == R_OR1K_GOT_AHI16)
+	      saw_gotha = TRUE;
+
+	    /* If we have a R_OR1K_GOT16 followed by a R_OR1K_GOT_AHI16
+	       relocation we assume the code is doing the right thing to avoid
+	       overflows.  Here we mask the lower 16-bit of the relocation to
+	       avoid overflow validation failures.  */
+	    if (r_type == R_OR1K_GOT16 && saw_gotha)
+	      relocation &= 0xffff;
 
 	  /* Addend should be zero.  */
 	  if (rel->r_addend != 0)
