@@ -2246,9 +2246,10 @@ or1k_write_plt_entry (bfd *output_bfd, bfd_byte *contents, unsigned insnj,
 {
   unsigned nodelay = elf_elfheader (output_bfd)->e_flags & EF_OR1K_NODELAY;
   unsigned output_insns[PLT_MAX_INSN_COUNT];
+  size_t i;
 
   /* Copy instructions into the output buffer.  */
-  for (size_t i = 0; i < insn_count; i++)
+  for (i = 0; i < insn_count; i++)
     output_insns[i] = insns[i];
 
   /* Honor the no-delay-slot setting.  */
@@ -2279,7 +2280,7 @@ or1k_write_plt_entry (bfd *output_bfd, bfd_byte *contents, unsigned insnj,
     }
 
   /* Write out the output buffer.  */
-  for (size_t i = 0; i < (insn_count+1); i++)
+  for (i = 0; i < (insn_count+1); i++)
     bfd_put_32 (output_bfd, output_insns[i], contents + (i*4));
 }
 
